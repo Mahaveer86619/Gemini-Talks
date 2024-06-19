@@ -44,10 +44,11 @@ flutter:
     - .env
     - assets/images/
     - assets/logo/
+    - assets/icons/
 
 # APP ICON
 flutter_icons:
-  image_path: assets/logo/seven_ai_logo.png
+  image_path: assets/logo/gemini_talks_logo.png
   android: "launcher_icon"
   ios: "AppIcon"
   remove_alpha_ios: true
