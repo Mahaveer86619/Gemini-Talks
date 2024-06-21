@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gemini_talks/core/utils/extensions.dart';
-import 'package:gemini_talks/features/landing/view/components/generate_button.dart';
-import 'package:gemini_talks/features/landing/view/components/input_field.dart';
+import 'package:gemini_talks/features/gen/view/components/generate_button.dart';
+import 'package:gemini_talks/features/gen/view/components/input_field.dart';
 
 class ContentScreen extends StatefulWidget {
   final String prompt;

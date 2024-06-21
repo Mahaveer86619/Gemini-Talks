@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"net/http"
 
-	firestore "cloud.google.com/go/firestore"
 	"github.com/Mahaveer86619/Gemini-Talks/config"
 	"google.golang.org/api/iterator"
 )
@@ -20,17 +19,18 @@ type RequestChatHistory struct {
 	UserUid string        `json:"userUid"`
 	History []ChatMessage `json:"history"`
 }
+
 type RequestCreativeHistory struct {
 	Prompt    string `json:"prompt"`
 	Response  string `json:"response"`
-	Timestamp string `json:"timestamp"`
-	UserUid   string `json:"user_uid"`
+	Timestamp string `json:"timeStamp"`
+	UserUid   string `json:"userUid"`
 }
 
 type ChatHistoryObject struct {
 	Id          string        `json:"id"`
 	Prompt      string        `json:"prompt"`
-	ChatHistory []ChatMessage `json:"chatHistory"`
+	ChatHistory []ChatMessage `json:"history"`
 	UserUid     string        `json:"user_uid"`
 }
 
@@ -67,7 +67,7 @@ func SaveChatHistory(w http.ResponseWriter, r *http.Request) {
 			UserUid:     req.UserUid,
 		}
 
-		_, err := ref.Set(ctx, chatHistory, firestore.MergeAll)
+		_, err := ref.Set(ctx, chatHistory)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			json.NewEncoder(w).Encode("Server error")
@@ -76,7 +76,6 @@ func SaveChatHistory(w http.ResponseWriter, r *http.Request) {
 
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
-		json.NewEncoder(w).Encode(chatHistory)
 		return
 	}
 
@@ -107,7 +106,7 @@ func SaveCreativeHistory(w http.ResponseWriter, r *http.Request) {
 			UserUid:   creativeHistory.UserUid,
 		}
 
-		_, err := ref.Set(ctx, creativeHistory, firestore.MergeAll)
+		_, err := ref.Set(ctx, creativeHistory)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			json.NewEncoder(w).Encode("Server error")
@@ -116,7 +115,6 @@ func SaveCreativeHistory(w http.ResponseWriter, r *http.Request) {
 
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
-		json.NewEncoder(w).Encode(creativeHistory)
 		return
 	}
 
@@ -125,6 +123,65 @@ func SaveCreativeHistory(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetHistory(w http.ResponseWriter, r *http.Request) {
+	ctx := context.Background()
+	client := config.GetFirestoreClient()
+
+	historyId := r.URL.Query().Get("id")
+	historyType := r.URL.Query().Get("type")
+
+	var historyObject interface{}
+
+	switch historyType {
+	case "creative":
+		if historyId == "" {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode("History id is required")
+			return
+		}
+
+		doc, err := client.Collection(CREATIVE_HISTORY_COLLECTION).Doc(historyId).Get(ctx)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			json.NewEncoder(w).Encode("Could not get history")
+			return
+		}
+
+		var creativeHistoryObject CreativeHistoryObject
+		doc.DataTo(&creativeHistoryObject)
+
+		historyObject = creativeHistoryObject
+
+	case "chat":
+		if historyId == "" {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode("History id is required")
+			return
+		}
+
+		doc, err := client.Collection(CHAT_HISTORY_COLLECTION).Doc(historyId).Get(ctx)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			json.NewEncoder(w).Encode("Could not get history")
+			return
+		}
+
+		var chatHistoryObject ChatHistoryObject
+		doc.DataTo(&chatHistoryObject)
+
+		historyObject = chatHistoryObject
+
+	default:
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode("Invalid history type")
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusFound)
+	json.NewEncoder(w).Encode(historyObject)
+}
+
+func GetAllHistory(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 	client := config.GetFirestoreClient()
 

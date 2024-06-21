@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gemini_talks/core/themes/pallet.dart';
-import 'package:gemini_talks/features/landing/view/components/message_field.dart';
+import 'package:gemini_talks/features/gen/view/components/message_field.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});

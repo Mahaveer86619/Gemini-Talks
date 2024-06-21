@@ -1,12 +1,15 @@
-import 'package:gemini_talks/features/landing/model/chat_item_model.dart';
+import 'package:gemini_talks/features/gen/model/chat_item_model.dart';
 
-class ChatRequestModel {
+class SaveChatHistoryModel {
   final String userUid;
   final List<ChatItemModel> history;
 
-  ChatRequestModel(this.userUid, this.history);
+  SaveChatHistoryModel(
+    this.userUid,
+    this.history,
+  );
 
-  ChatRequestModel.fromJson(Map<String, dynamic> json)
+  SaveChatHistoryModel.fromJson(Map<String, dynamic> json)
       : userUid = json['userUid'],
         history = (json['history'] as List<dynamic>)
             .map((e) => ChatItemModel.fromJson(e))
@@ -17,11 +20,11 @@ class ChatRequestModel {
         'history': history.map((e) => e.toJson()).toList(),
       };
 
-  ChatRequestModel copyWith({
+  SaveChatHistoryModel copyWith({
     String? userUid,
     List<ChatItemModel>? history,
   }) {
-    return ChatRequestModel(
+    return SaveChatHistoryModel(
       userUid ?? this.userUid,
       history ?? this.history,
     );
@@ -29,6 +32,6 @@ class ChatRequestModel {
 
   @override
   String toString() {
-    return 'ChatRequestModel{userUid: $userUid, history: $history}';
+    return 'SaveChatHistoryModel{userUid: $userUid, history: $history}';
   }
 }

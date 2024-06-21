@@ -58,5 +58,5 @@ func CreateCreativeResponse(w http.ResponseWriter, r *http.Request) {
 
 	//* Encode and send the response
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(resp.Candidates[0].Content)
+	json.NewEncoder(w).Encode(resp.Candidates[0].Content.Parts[0])
 }

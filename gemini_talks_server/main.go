@@ -33,7 +33,8 @@ Running in development mode
 
 Endpoints:
 
-/history 			(GET) 				- Get creative and chat history, send user_uid and type in query params
+/allHistory 		(GET) 				- Get creative or chat history, send user_uid and type in query params
+/history 			(GET) 				- Get creative or chat history, send id and type in query params
 /creativeHistory 	(POST) 				- Save creative history, send in body
 /chatHistory 		(POST) 				- Save chat history, send in body
 /templates 			(GET and POST) 		- Upload and get 4 templates 
@@ -52,6 +53,7 @@ func handleFunctions(mux *http.ServeMux) {
 	mux.HandleFunc("POST /templates", features.HandleTemplates)
 
 	//* History
+	mux.HandleFunc("GET /allHistory", features.GetAllHistory)
 	mux.HandleFunc("GET /history", features.GetHistory)
 	mux.HandleFunc("POST /creativeHistory", features.SaveCreativeHistory)
 	mux.HandleFunc("POST /chatHistory", features.SaveChatHistory)

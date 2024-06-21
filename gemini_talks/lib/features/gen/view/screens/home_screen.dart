@@ -1,17 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gemini_talks/core/common/app_constants.dart';
 import 'package:gemini_talks/core/themes/pallet.dart';
 import 'package:gemini_talks/core/utils/extensions.dart';
-import 'package:gemini_talks/features/landing/view/components/creative_templates.dart';
-import 'package:gemini_talks/features/landing/view/components/generate_button.dart';
-import 'package:gemini_talks/features/landing/view/components/history_tile.dart';
-import 'package:gemini_talks/features/landing/view/components/input_field.dart';
-import 'package:gemini_talks/features/landing/view/components/search_form_field.dart';
-import 'package:gemini_talks/features/landing/view/screens/chat_screen.dart';
-import 'package:gemini_talks/features/landing/view/screens/content_screen.dart';
+import 'package:gemini_talks/features/gen/view/components/creative_templates.dart';
+import 'package:gemini_talks/features/gen/view/components/generate_button.dart';
+import 'package:gemini_talks/features/gen/view/components/history_tile.dart';
+import 'package:gemini_talks/features/gen/view/components/input_field.dart';
+import 'package:gemini_talks/features/gen/view/components/search_form_field.dart';
+import 'package:gemini_talks/features/gen/view/screens/chat_screen.dart';
+import 'package:gemini_talks/features/gen/view/screens/content_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -47,10 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return SafeArea(
       child: Scaffold(
-        backgroundColor: theme.colorScheme.background,
         appBar: _appBar(),
         drawer: _buildDrawer(),
         body: _buildBody(),
