@@ -249,7 +249,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 tag: 'generate_btn',
                 child: MyGenerateButton(
                   onPressed: () {
-                    _changeScreen(ContentScreen(prompt: creativeController.text));
+                    _changeScreen(
+                        ContentScreen(prompt: creativeController.text));
                   },
                   text: 'Generate',
                 ),
@@ -295,32 +296,32 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
           ),
         ),
-        Hero(
-          tag: 'chat',
-          child: GestureDetector(
-            onTap: () {
-              _changeScreen(const ChatScreen());
-            },
-            child: Container(
-              margin: const EdgeInsets.all(16),
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface,
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(20),
-                ),
+        GestureDetector(
+          onTap: () {
+            _changeScreen(const ChatScreen());
+          },
+          child: Container(
+            margin: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: const BorderRadius.all(
+                Radius.circular(20),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Start a conversation with AI',
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: Theme.of(context).colorScheme.onBackground,
-                        ),
-                  ),
-                  const SizedBox(width: 8),
-                  Container(
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Start a conversation with AI',
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
+                ),
+                const SizedBox(width: 8),
+                Hero(
+                  tag: 'chat_btn',
+                  child: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: const BoxDecoration(
                       gradient: LinearGradient(
@@ -341,8 +342,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -360,7 +361,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               TextButton(
                 onPressed: () {
-                  //! show all conversations
+                  //! show all activity
                 },
                 child: Text(
                   'Show all',

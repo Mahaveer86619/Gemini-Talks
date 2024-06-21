@@ -9,7 +9,7 @@ import (
 
 func main() {
 	mux := http.NewServeMux()
-	fmt.Println("Starting server...")
+	fmt.Println(welcomeString)
 
 	handleFunctions(mux)
 
@@ -31,12 +31,33 @@ Serving at: http://192.168.29.150:4040
 
 Running in development mode
 
+Endpoints:
+
+/history 			(GET) 				- Get creative and chat history, send user_uid and type in query params
+/creativeHistory 	(POST) 				- Save creative history, send in body
+/chatHistory 		(POST) 				- Save chat history, send in body
+/templates 			(GET and POST) 		- Upload and get 4 templates 
+/creative 			(POST) 				- Create creative response with given prompt in body
+/chat 				(POST) 				- Create chat response with given prompt in body
+
 `
 
 func handleFunctions(mux *http.ServeMux) {
 	mux.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, welcomeString)
 	})
+
+	//* Templates
+	mux.HandleFunc("GET /templates", features.HandleTemplates)
+	mux.HandleFunc("POST /templates", features.HandleTemplates)
+
+	//* History
+	mux.HandleFunc("GET /history", features.GetHistory)
+	mux.HandleFunc("POST /creativeHistory", features.SaveCreativeHistory)
+	mux.HandleFunc("POST /chatHistory", features.SaveChatHistory)
+
+	//* Chat
+	mux.HandleFunc("POST /chat", features.HandleChat)
 
 	//* Creative Gen
 	mux.HandleFunc("POST /creative", features.CreateCreativeResponse)

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gemini_talks/core/themes/pallet.dart';
 import 'package:gemini_talks/features/landing/view/components/message_field.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -11,6 +12,10 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final msgController = TextEditingController();
+
+  _onSendPressed(String msg) {
+    //* send message
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,18 +61,66 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  _buildBody() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Hero(
-          tag: 'chat',
-          child: MessageField(
-            hintText: 'Message',
-            controller: msgController,
-          ),
+  _buildMsgInput() {
+    return Container(
+      margin: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(6.0),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(20),
         ),
-      ],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          MessageField(hintText: 'Message', controller: msgController),
+          Hero(
+            tag: 'chat_btn',
+            child: GestureDetector(
+              onTap: () {
+                _onSendPressed(msgController.text);
+                setState(() {
+                  msgController.clear();
+                });
+              },
+              child: Container(
+                margin: const EdgeInsets.all(4),
+                padding: const EdgeInsets.all(8),
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Pallete.gradient1,
+                      Pallete.gradient2,
+                    ],
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20),
+                  ),
+                ),
+                child: Icon(
+                  Icons.send,
+                  size: 22,
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _buildBody() {
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          _buildMsgInput(),
+        ],
+      ),
     );
   }
 }

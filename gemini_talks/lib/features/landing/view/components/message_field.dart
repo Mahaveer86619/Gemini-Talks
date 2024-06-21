@@ -13,7 +13,7 @@ class MessageField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.7,
+      width: MediaQuery.of(context).size.width * 0.75,
       child: TextFormField(
         keyboardType: TextInputType.multiline,
         textInputAction: TextInputAction.newline,
